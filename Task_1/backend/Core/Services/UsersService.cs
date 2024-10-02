@@ -1,4 +1,5 @@
 using Backend.Core.Entities;
+using Backend.Core.Errors;
 using Backend.Core.Interfaces.Repositories;
 using Backend.Core.Interfaces.Services;
 
@@ -8,21 +9,72 @@ public class UsersServices(IUsersRepository usersRepository) : IUsersService
 {
     public Task CreateUserAsync(User user)
     {   
+        if(!user.HasConsented)
+        {
+            throw new UnauthorizedException("User has not consented to the terms and conditions");
+        }
+
         return usersRepository.CreateUserAsync(user);
     }
 
-    public Task<User> GetUserByEmailAsync(string email)
+    public async Task DeleteUserAsync(Guid id)
     {
-        return usersRepository.GetUserByEmailAsync(email);
+        User? user = await usersRepository.GetUserByIdAsync(id);
+
+        if(user == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        await usersRepository.DeleteUserAsync(id);
     }
 
-    public Task<User> GetUserByIdAsync(Guid id)
+    public async Task<User> GetUserByEmailAsync(string email)
     {
-        return usersRepository.GetUserByIdAsync(id);
+        User? result = await usersRepository.GetUserByEmailAsync(email);
+
+        if(result == null)
+        {
+            throw new NotFoundException($"User with email {email} not found");
+        }
+
+        return result;
+    }
+
+    public async Task<User> GetUserByIdAsync(Guid id)
+    {
+        User? result = await usersRepository.GetUserByIdAsync(id);
+
+        if(result == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        return result;
     }
 
     public Task<IEnumerable<User>> GetUsersAsync()
     {
         return usersRepository.GetUsersAsync();
+    }
+
+    public async Task UpdateUserAsync(Guid id, User user)
+    {
+        User? result = await usersRepository.GetUserByIdAsync(id);
+
+        if(result == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        User anonymousData = new User
+        {
+            Id = result.Id,
+            UserName = "",
+            Password = "",
+            HasConsented = result.HasConsented
+        };
+
+        await usersRepository.UpdateUserAsync(id, anonymousData);
     }
 }

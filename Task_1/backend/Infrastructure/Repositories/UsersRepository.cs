@@ -1,6 +1,7 @@
 using Backend.Core.Entities;
 using Backend.Core.Interfaces.Repositories;
 using MongoDB.Driver;
+using Throw;
 
 namespace Backend.Infrastructure.Repositories;
 
@@ -9,6 +10,12 @@ public class UsersRepository(IMongoCollection<User> users) : IUsersRepository
     public async Task CreateUserAsync(User user)
     {
         await users.InsertOneAsync(user);
+    }
+
+    public async Task DeleteUserAsync(Guid id)
+    {
+        var result = await users.DeleteOneAsync(user => user.Id == id);
+        result.DeletedCount.Throw().IfNegativeOrZero();
     }
 
     public async Task<User> GetUserByEmailAsync(string email)
@@ -27,5 +34,11 @@ public class UsersRepository(IMongoCollection<User> users) : IUsersRepository
     {
         IEnumerable<User> result = await users.Find(_ => true).ToListAsync();
         return result;
+    }
+
+    public async Task UpdateUserAsync(Guid id, User user)
+    {
+        var result = await users.ReplaceOneAsync(u => u.Id == id, user);
+        result.ModifiedCount.Throw().IfNegativeOrZero();
     }
 }
