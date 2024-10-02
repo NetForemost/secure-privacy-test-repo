@@ -7,8 +7,9 @@ Content-Type: application/json
     "lastName": "Doe",
     "userName": "johndoe",
     "email": "johndoe@gmai.com",
-    "password": "password",
     "phoneNumber": "+1234567890",
+    "password": "password",
+    "hasConsented": true
 }
 
 ### BAD PWD REQUEST
@@ -22,6 +23,7 @@ Content-Type: application/json
     "email": "johndoe@gmai.com",
     "password": "pass",
     "phoneNumber": "+1234567890",
+    "hasConsented": true
 }
 
 ### BAD PHONE REQUEST
@@ -34,6 +36,21 @@ Content-Type: application/json
     "lastName": "Doe",
     "userName": "johndoe",
     "email": "johndoe@gmai.com",
-    "password": "pass",
+    "password": "password",
     "phoneNumber": "1234567890",
+    "hasConsented": true
+}
+
+### UNAUTHORIZED REQUEST USER HAS NOT CONSENTED
+POST http://localhost:5168/users
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "userName": "johndoe",
+    "email": "johndoe@gmail.com",
+    "password": "password",
+    "phoneNumber": "+1234567890",
+    "hasConsented": false
 }

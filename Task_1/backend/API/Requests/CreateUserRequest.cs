@@ -8,7 +8,8 @@ public record CreateUserRequest(
     string UserName,
     string Email,
     string PhoneNumber,
-    string Password
+    string Password,
+    bool HasConsented
 ){
     public User ToDomain()
     {
@@ -19,7 +20,8 @@ public record CreateUserRequest(
             UserName = UserName,
             Email = Email,
             PhoneNumber = PhoneNumber,
-            Password = Password
+            Password = Password,
+            HasConsented = HasConsented
         };
     }
 }

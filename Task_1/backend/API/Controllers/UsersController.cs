@@ -12,7 +12,7 @@ namespace Backend.API.Controllers;
 public class UsersController(IUsersService usersService): ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Create(CreateUserRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {
         var validator = new CreateUserRequestValidator();
         var validationResult = validator.Validate(request);
