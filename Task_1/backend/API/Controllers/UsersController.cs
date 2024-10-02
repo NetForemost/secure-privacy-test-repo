@@ -32,4 +32,36 @@ public class UsersController(IUsersService usersService): ControllerBase
             value: response
         );  
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        IEnumerable<User> users = await usersService.GetUsersAsync();
+        IEnumerable<GetUserResponse> response = users.Select(GetUserResponse.FromDomain);
+
+        return Ok(response);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get([FromRoute] Guid id)
+    {
+        User user = await usersService.GetUserByIdAsync(id);
+        GetUserResponse response = GetUserResponse.FromDomain(user);
+        return Ok(response);
+    }
+
+    [HttpGet("email/{email}")]
+    public async Task<IActionResult> GetByEmail([FromRoute] string email)
+    {
+        User user = await usersService.GetUserByEmailAsync(email);
+        GetUserResponse response = GetUserResponse.FromDomain(user);
+        return Ok(response);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        await usersService.DeleteUserAsync(id);
+        return NoContent();
+    }
 }

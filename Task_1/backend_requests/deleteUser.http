@@ -1,0 +1,17 @@
+# @name Create
+POST http://localhost:5168/users
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "userName": "johndoe",
+    "email": "johndoe@gmai.com",
+    "phoneNumber": "+1234567890",
+    "password": "password",
+    "hasConsented": true
+}
+
+### DELETE get based on location header
+DELETE {{{{Create.response.headers.Location}}}}
+
