@@ -28,7 +28,15 @@ public class UsersServices(IUsersRepository usersRepository) : IUsersService
             throw new NotFoundException("User not found");
         }
 
-        await usersRepository.DeleteUserAsync(id);
+        User anonymousData = new()
+        {
+            Id = user.Id,
+            UserName = "",
+            Password = "",
+            HasConsented = false,
+        };
+
+        await usersRepository.UpdateUserAsync(id, anonymousData);
     }
 
     public async Task<User> GetUserByEmailAsync(string email)
@@ -69,14 +77,6 @@ public class UsersServices(IUsersRepository usersRepository) : IUsersService
             throw new NotFoundException("User not found");
         }
 
-        User anonymousData = new User
-        {
-            Id = result.Id,
-            UserName = "",
-            Password = "",
-            HasConsented = result.HasConsented
-        };
-
-        await usersRepository.UpdateUserAsync(id, anonymousData);
+        await usersRepository.UpdateUserAsync(id, user);
     }
 }
