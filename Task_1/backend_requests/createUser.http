@@ -1,0 +1,39 @@
+### SUCCESSFUL REQUEST
+POST http://localhost:5168/users
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "userName": "johndoe",
+    "email": "johndoe@gmai.com",
+    "password": "password",
+    "phoneNumber": "+1234567890",
+}
+
+### BAD PWD REQUEST
+POST http://localhost:5168/users
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "userName": "johndoe",
+    "email": "johndoe@gmai.com",
+    "password": "pass",
+    "phoneNumber": "+1234567890",
+}
+
+### BAD PHONE REQUEST
+POST http://localhost:5168/users
+Content-Type: application/json
+
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "userName": "johndoe",
+    "email": "johndoe@gmai.com",
+    "password": "pass",
+    "phoneNumber": "1234567890",
+}
