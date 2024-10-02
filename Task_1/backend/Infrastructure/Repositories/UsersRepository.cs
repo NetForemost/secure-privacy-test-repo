@@ -32,7 +32,14 @@ public class UsersRepository(IMongoCollection<User> users) : IUsersRepository
 
     public async Task<IEnumerable<User>> GetUsersAsync()
     {
-        IEnumerable<User> result = await users.Find(_ => true).ToListAsync();
+        IEnumerable<User> result = await users.Find(user => 
+            user.Email != string.Empty 
+            || user.FirstName != string.Empty
+            || user.LastName != string.Empty
+            || user.UserName != string.Empty
+            || user.Password != string.Empty
+            || user.PhoneNumber != string.Empty
+        ).ToListAsync();
         return result;
     }
 
