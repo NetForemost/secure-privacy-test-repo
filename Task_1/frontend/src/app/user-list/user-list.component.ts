@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../user.service';
 import { User } from '../user.model';
 
@@ -11,8 +10,9 @@ import { User } from '../user.model';
 export class UserListComponent implements OnInit {
   users: User[] = [];
   errorMessage: string = '';
+  @Output() userSelected = new EventEmitter<User>();
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -20,24 +20,34 @@ export class UserListComponent implements OnInit {
 
   loadUsers(): void {
     this.userService.getUsers().subscribe({
-      next: (data: User[]) => {
-        this.users = data;
+      next: (users) => {
+        this.users = users;
+        this.errorMessage = '';
       },
       error: (error) => {
-        console.error('Error fetching users:', error);
-        this.errorMessage = 'Could not load users.';
+        console.error('Error loading users:', error);
+        this.errorMessage = 'An error occurred while loading users.';
       }
     });
   }
 
-  deleteUser(id: string): void {
-    this.userService.deleteUser(id).subscribe({
+  deleteUser(userId: string): void {
+    this.userService.deleteUser(userId).subscribe({
       next: () => {
-        this.users = this.users.filter(user => user.id !== id);
+        this.loadUsers();
       },
       error: (error) => {
         console.error('Error deleting user:', error);
+        this.errorMessage = 'An error occurred while deleting the user.';
       }
     });
+  }
+
+  selectUser(user: User): void {
+    this.userSelected.emit(user);
+  }
+
+  onUserCreated(): void {
+    this.loadUsers();
   }
 }

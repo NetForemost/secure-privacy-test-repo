@@ -1,0 +1,56 @@
+/* Tabla de usuarios */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table thead {
+  background-color: #5b7db1;
+  text-align: left;
+  color: white;
+  font-size: 16px;
+}
+
+table th,
+table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  color: #555;
+}
+
+table th {
+  background-color: #5b7db1;
+  color: white;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tr:hover {
+  background-color: #f1f1f1;
+}
+
+table button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+table button:hover {
+  background-color: #c0392b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

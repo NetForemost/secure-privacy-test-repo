@@ -36,12 +36,12 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
-    {   
+    {
         var mongoSettings = configuration.GetSection(DbConstants.MongoDbSettings).Get<MongoDbSettings>();
 
         Console.WriteLine($"MongoDbSettings: {mongoSettings!.ConnectionString}, {mongoSettings.DatabaseName}");
 
-        services.AddSingleton(serviceProvider => 
+        services.AddSingleton(serviceProvider =>
         {
             return new MongoDbContext(mongoSettings!.ConnectionString, mongoSettings!.DatabaseName);
         });
@@ -52,6 +52,20 @@ public static class ServiceCollectionExtensions
             return context.Users;
         });
 
+        return services;
+    }
+
+    public static IServiceCollection AddFrontendCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontend",
+                policy => policy
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+            );
+        });
         return services;
     }
 }

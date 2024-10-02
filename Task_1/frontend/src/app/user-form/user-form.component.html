@@ -1,22 +1,39 @@
 <h2>Create User</h2>
+
 <form #userForm="ngForm" (ngSubmit)="createUser(userForm)">
-  <div>
-    <label for="userName">User Name:</label>
-    <input type="text" id="userName" name="userName" [(ngModel)]="user.userName" required>
+  <label for="userName">User Name:</label>
+  <input type="text" id="userName" [(ngModel)]="user.userName" name="userName" required>
+  <div *ngIf="getFieldErrors('UserName').length > 0" class="field-error">
+    <ul>
+      <li *ngFor="let error of getFieldErrors('UserName')">{{ error }}</li>
+    </ul>
   </div>
-  <div>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" [(ngModel)]="user.email" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
+  <div *ngIf="getFieldErrors('Email').length > 0" class="field-error">
+    <ul>
+      <li *ngFor="let error of getFieldErrors('Email')">{{ error }}</li>
+    </ul>
   </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" [(ngModel)]="user.password" required>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" [(ngModel)]="user.password" name="password" required>
+  <div *ngIf="getFieldErrors('Password').length > 0" class="field-error">
+    <ul>
+      <li *ngFor="let error of getFieldErrors('Password')">{{ error }}</li>
+    </ul>
   </div>
-  <div>
-    <label>
-      <input type="checkbox" name="hasConsented" [(ngModel)]="user.hasConsented" required>
-      I consent to the terms and conditions
-    </label>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="user.hasConsented" name="hasConsented">
+    I consent to the terms and conditions
+  </label>
+  <div *ngIf="getFieldErrors('hasConsented').length > 0" class="field-error">
+    <ul>
+      <li *ngFor="let error of getFieldErrors('hasConsented')">{{ error }}</li>
+    </ul>
   </div>
+
   <button type="submit">Create User</button>
 </form>
