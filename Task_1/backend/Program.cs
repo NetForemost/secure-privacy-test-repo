@@ -6,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services
         .AddGlobalErrorHandling()
+        .AddServices()
+        .AddRepositories()
+        .AddPersistence(builder.Configuration)
         .AddControllers();
 }
 

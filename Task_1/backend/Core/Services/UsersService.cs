@@ -14,6 +14,8 @@ public class UsersServices(IUsersRepository usersRepository) : IUsersService
             throw new UnauthorizedException("User has not consented to the terms and conditions");
         }
 
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
         return usersRepository.CreateUserAsync(user);
     }
 
